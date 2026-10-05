@@ -193,3 +193,51 @@ input[aria-invalid='true'], select[aria-invalid='true'], textarea[aria-invalid='
 .footer-base { border-top: 1px solid rgba(255,255,255,.15); margin-top: 2rem; padding-top: 1rem; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+
+/* ---------- animated scenes ---------- */
+.scene { display: block; width: 100%; height: 100%; }
+.scene .a-pan, .scene .a-drift-a, .scene .a-drift-b, .scene .a-bird, .scene .a-flag,
+.scene .a-glow, .scene [class^='a-shim'], .scene .a-flicker { transform-box: view-box; }
+.scene.live .a-pan { transform-origin: 50% 62%; animation: s-pan 6s ease-in-out infinite alternate; }
+.scene.live .a-drift-a { animation: s-drift-a 6s ease-in-out infinite alternate; }
+.scene.live .a-drift-b { animation: s-drift-b 6s ease-in-out infinite alternate; }
+.scene.live .a-bird { animation: s-bird 6s ease-in-out infinite alternate; }
+.scene.live .a-glow { animation: s-glow 3s ease-in-out infinite alternate; }
+.scene.live .a-flag { transform-box: fill-box; transform-origin: left center; animation: s-flag 1.5s ease-in-out infinite alternate; }
+.scene.live .a-shim-a { animation: s-shim 3s ease-in-out infinite alternate; }
+.scene.live .a-shim-b { animation: s-shim 3s ease-in-out -1s infinite alternate; }
+.scene.live .a-shim-c { animation: s-shim 3s ease-in-out -2s infinite alternate; }
+.scene.live .a-flicker { animation: s-glow 3s ease-in-out infinite alternate; }
+@keyframes s-pan { to { transform: scale(1.07); } }
+@keyframes s-drift-a { to { transform: translateX(70px); } }
+@keyframes s-drift-b { to { transform: translateX(-50px); } }
+@keyframes s-bird { to { transform: translate(150px, -16px); } }
+@keyframes s-glow { from { opacity: .6; } to { opacity: 1; } }
+@keyframes s-flag { from { transform: skewY(-8deg) scaleX(1); } to { transform: skewY(8deg) scaleX(.86); } }
+@keyframes s-shim { from { opacity: .1; transform: translateX(-8px); } to { opacity: .8; transform: translateX(8px); } }
+@media (prefers-reduced-motion: reduce) { .scene.live * { animation: none !important; } }
+
+/* ---------- hero video ---------- */
+.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .8s; }
+.hero-video.ready { opacity: 1; }
+
+/* ---------- video previews ---------- */
+.tour-2 { max-width: 900px; }
+.tour { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+@media (min-width: 700px) { .tour { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .tour { grid-template-columns: repeat(4, 1fr); } }
+.video-card { position: relative; display: block; width: 100%; padding: 0; border: 0; cursor: pointer; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/10; background: #000; box-shadow: var(--shadow); text-align: left; color: #fff; }
+.video-card .scene, .video-card video, .video-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.video-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 45%, rgba(8,24,14,.82)); }
+.video-card .vc-meta { position: absolute; z-index: 2; left: 1rem; right: 1rem; bottom: .9rem; display: grid; }
+.video-card .vc-meta strong { font: 700 1.25rem var(--serif); }
+.video-card .vc-meta span { font-size: .82rem; opacity: .9; }
+.video-card .vc-play { position: absolute; z-index: 2; top: 50%; left: 50%; width: 58px; height: 58px; margin: -29px 0 0 -29px; border-radius: 50%; background: rgba(255,255,255,.9); color: var(--green-900); display: grid; place-items: center; font-size: 1.3rem; padding-left: 4px; transition: transform .2s; }
+.video-card:hover .vc-play { transform: scale(1.12); }
+.video-card .vc-time { position: absolute; z-index: 2; top: .7rem; right: .7rem; background: rgba(0,0,0,.6); border-radius: 6px; padding: .1rem .5rem; font-size: .75rem; }
+.video-modal { position: fixed; inset: 0; z-index: 95; background: rgba(5,15,9,.9); display: grid; place-items: center; padding: 1rem; }
+.video-modal-inner { position: relative; width: min(1000px, 100%); }
+.video-modal video { width: 100%; border-radius: 12px; background: #000; max-height: 80vh; }
+.video-modal p { color: #fff; text-align: center; margin: .6rem 0 0; }
+.video-modal .lb-close { top: -.6rem; right: -.2rem; }
+@media (min-width: 700px) { .tour-2 { grid-template-columns: repeat(2, 1fr) !important; } }

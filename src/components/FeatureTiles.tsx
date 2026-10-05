@@ -8,7 +8,7 @@ export default function FeatureTiles() {
       {FEATURE_TILES.map((t) => (
         <li key={t.title}>
           <Link to={t.to} className="tile">
-            <Scene tone={t.tone} className="tile-art" />
+            <Scene variant={t.variant} seed={t.title.length * 17} className="tile-art" />
             <span className="tile-body">
               <strong>{t.title}</strong>
               <span>{t.blurb}</span>

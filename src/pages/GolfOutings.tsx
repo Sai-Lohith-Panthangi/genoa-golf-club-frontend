@@ -12,7 +12,7 @@ export default function GolfOutings() {
         eyebrow="Groups and tournaments"
         title="Golf Outings"
         subtitle="From a foursome with friends to a 144-player charity day, we run the details so you can enjoy the round."
-        tone="gold"
+        video="dawn"
       >
         <a className="btn btn-gold" href="#enquire">Request a date</a>
       </PageHero>

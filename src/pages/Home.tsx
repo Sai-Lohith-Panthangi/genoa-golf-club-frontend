@@ -7,6 +7,8 @@ import Gallery from '../components/Gallery';
 import PageHero from '../components/PageHero';
 import Scene from '../components/Scene';
 import Section from '../components/Section';
+import VideoPreview from '../components/VideoPreview';
+import { TOUR } from '../data/media';
 import { BOOKING_URL, SOCIAL_POSTS, STAY_PLAY } from '../data/site';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 
@@ -16,6 +18,7 @@ export default function Home() {
     <>
       <PageHero
         tall
+        video="lake"
         eyebrow="Genoa, Nevada"
         title="Golf the way it should feel."
         subtitle="Two championship courses, a warm clubhouse and a team that remembers your name."
@@ -28,11 +31,19 @@ export default function Home() {
         <FeatureTiles />
       </Section>
 
-      <Section tone="alt" title="Two courses, two characters">
+      <Section tone="alt" title="Take a tour" intro="Four short films. Press play and see the club for yourself.">
+        <div className="tour">
+          {TOUR.map((k) => (
+            <VideoPreview key={k} clip={k} />
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Two courses, two characters">
         <div className="split">
           {(['lakes', 'ranch'] as const).map((k) => (
             <Link key={k} to={k === 'lakes' ? '/lakes-course' : '/ranch-course'} className="course-card">
-              <Scene tone={k === 'lakes' ? 'sky' : 'gold'} className="course-art" />
+              <Scene variant={k === 'lakes' ? 'lake' : 'ranch'} seed={k === 'lakes' ? 7 : 19} className="course-art" />
               <span>
                 <strong>{k === 'lakes' ? 'Lakes Course' : 'Ranch Course'}</strong>
                 <span>{k === 'lakes' ? 'Water, views and a signature par 3.' : 'Open country and relaxed pace.'}</span>
@@ -42,19 +53,19 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section id="events" title="Upcoming events" intro="Tournaments, socials and clinics. Join in.">
+      <Section id="events" tone="alt" title="Upcoming events" intro="Tournaments, socials and clinics. Join in.">
         <EventsPreview />
       </Section>
 
-      <Section tone="alt" title="Around the club">
+      <Section title="Around the club">
         <Gallery />
       </Section>
 
-      <Section title="From our feed" intro="Follow along @genoagolfclub">
+      <Section tone="alt" title="From our feed" intro="Follow along @genoagolfclub">
         <ul className="social">
           {SOCIAL_POSTS.map((p) => (
             <li key={p.id} className="social-card">
-              <Scene tone={p.tone} className="social-art" />
+              <Scene variant={p.variant} seed={p.id.charCodeAt(1) * 9} className="social-art" />
               <p>{p.text}</p>
               <small>{p.handle}</small>
             </li>
@@ -62,7 +73,7 @@ export default function Home() {
         </ul>
       </Section>
 
-      <Section tone="alt">
+      <Section>
         <div className="stay">
           <div>
             <h2>{STAY_PLAY.title}</h2>
@@ -72,11 +83,11 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section title="Join the E-Club" intro="Offers, news and first notice of new events. No spam.">
+      <Section tone="alt" title="Join the E-Club" intro="Offers, news and first notice of new events. No spam.">
         <EClubSignup sourcePage="home" />
       </Section>
 
-      <Section id="enquire" tone="alt" title="Enquire about a venue" intro="Weddings, corporate days and private functions. We reply within one business day.">
+      <Section id="enquire" title="Enquire about a venue" intro="Weddings, corporate days and private functions. We reply within one business day.">
         <EnquiryForm />
       </Section>
     </>

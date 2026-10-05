@@ -1,6 +1,8 @@
 // Static content for the marketing pages. Anything that changes often
 // (events, popup) comes from the backend via src/api/client.ts instead.
 
+import type { Variant } from '../components/Scene';
+
 export const BOOKING_URL = 'https://foreupsoftware.com/'; // ForeUP tee-time link (placeholder)
 
 export const NAV = [
@@ -16,13 +18,14 @@ export interface Tile {
   blurb: string;
   to: string;
   tone: 'green' | 'gold' | 'sky' | 'sand';
+  variant: Variant;
 }
 
 export const FEATURE_TILES: Tile[] = [
-  { title: 'Membership', blurb: 'Play more, save more, belong.', to: '/membership', tone: 'green' },
-  { title: 'Golf Outings', blurb: 'Tournaments and team days, handled.', to: '/golf-outings', tone: 'gold' },
-  { title: 'Dining', blurb: 'Lunch with a view of the 18th.', to: '/#enquire', tone: 'sky' },
-  { title: 'Weddings & Events', blurb: 'Vows on the lake, party on the lawn.', to: '/#enquire', tone: 'sand' },
+  { title: 'Membership', blurb: 'Play more, save more, belong.', to: '/membership', tone: 'green', variant: 'lake' },
+  { title: 'Golf Outings', blurb: 'Tournaments and team days, handled.', to: '/golf-outings', tone: 'gold', variant: 'ranch' },
+  { title: 'Dining', blurb: 'Lunch with a view of the 18th.', to: '/#enquire', tone: 'sky', variant: 'clubhouse' },
+  { title: 'Weddings & Events', blurb: 'Vows on the lake, party on the lawn.', to: '/#enquire', tone: 'sand', variant: 'sunset' },
 ];
 
 export interface CourseInfo {
@@ -142,12 +145,12 @@ export const TIERS: MembershipTier[] = [
 ];
 
 export const GALLERY = [
-  { id: 'g1', alt: 'Morning light over the lake at the 7th hole', tone: 'green' },
-  { id: 'g2', alt: 'Golfers walking the 12th fairway', tone: 'sky' },
-  { id: 'g3', alt: 'Wedding ceremony on the terrace lawn', tone: 'sand' },
-  { id: 'g4', alt: 'Ranch course pavilion at golden hour', tone: 'gold' },
-  { id: 'g5', alt: 'Practice green at dawn', tone: 'green' },
-  { id: 'g6', alt: 'Clubhouse dining room', tone: 'sand' },
+  { id: 'g1', alt: 'Morning light over the lake at the 7th hole', tone: 'green', variant: 'lake' },
+  { id: 'g2', alt: 'Golfers walking the 12th fairway', tone: 'sky', variant: 'lake' },
+  { id: 'g3', alt: 'Wedding ceremony on the terrace lawn', tone: 'sand', variant: 'sunset' },
+  { id: 'g4', alt: 'Ranch course pavilion at golden hour', tone: 'gold', variant: 'ranch' },
+  { id: 'g5', alt: 'Practice green at dawn', tone: 'green', variant: 'dawn' },
+  { id: 'g6', alt: 'Clubhouse dining room', tone: 'sand', variant: 'clubhouse' },
 ] as const;
 
 export const OUTING_PACKAGES = [
@@ -169,9 +172,9 @@ export const STAY_PLAY = {
 };
 
 export const SOCIAL_POSTS = [
-  { id: 's1', handle: '@genoagolfclub', text: 'First frost on the Lakes Course. Mornings like this are why we do it.', tone: 'sky' },
-  { id: 's2', handle: '@genoagolfclub', text: 'Congratulations to the Hendersons. Wedding season is in full swing.', tone: 'sand' },
-  { id: 's3', handle: '@genoagolfclub', text: 'New pin positions on the Ranch Course this weekend.', tone: 'green' },
+  { id: 's1', handle: '@genoagolfclub', text: 'First frost on the Lakes Course. Mornings like this are why we do it.', tone: 'sky', variant: 'dawn' },
+  { id: 's2', handle: '@genoagolfclub', text: 'Congratulations to the Hendersons. Wedding season is in full swing.', tone: 'sand', variant: 'sunset' },
+  { id: 's3', handle: '@genoagolfclub', text: 'New pin positions on the Ranch Course this weekend.', tone: 'green', variant: 'ranch' },
 ] as const;
 
 export const EVENT_TYPES = [

@@ -49,7 +49,24 @@ The backend must allow this origin in its CORS settings
 - Venue enquiry form with client-side validation that mirrors the backend rules, and server field errors shown inline
 - E-Club signup, events preview, gallery with keyboard-accessible lightbox
 - Accessibility: skip link, labelled fields, `aria-live` status messages, focus management in dialogs, reduced-motion support
-- Lazy-loaded secondary pages; 16 automated tests
+- Hero background video, tap-to-play video previews with a modal player, animated landscape artwork
+- Lazy-loaded secondary pages; 17 automated tests
+
+## Images and video
+
+No licensed photography was available when this was built, so the visuals are
+layered, animated landscape scenes (`src/components/Scene.tsx`) and five looping
+12-second clips in `public/media/` (`lake`, `ranch`, `clubhouse`, `sunset`, `dawn`,
+each with a `.jpg` poster). They drive the hero background video, the
+"Take a tour" preview cards and the course-page previews.
+
+- **Use real footage or photos:** replace the files in `public/media/` keeping the
+  same names, or edit `src/data/media.ts` to point at any URL.
+- **Re-render the clips** after changing a scene: run `npm run dev` in one terminal,
+  then `npm run media` in another (needs ffmpeg and Chrome; set `CHROMIUM_PATH` if
+  Chrome is not auto-detected). Every animation loops in 12 s, so the clips loop cleanly.
+- Hero video is muted, loops, skips itself for visitors who prefer reduced motion,
+  and falls back to the animated artwork if the file cannot load.
 
 ## Project layout
 

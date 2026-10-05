@@ -37,7 +37,7 @@ export default function Gallery() {
               }}
               aria-label={`Enlarge photo: ${g.alt}`}
             >
-              <Scene tone={g.tone} label={g.alt} />
+              <Scene variant={g.variant} seed={i * 13 + 5} label={g.alt} />
             </button>
           </li>
         ))}
@@ -46,7 +46,7 @@ export default function Gallery() {
       {index !== null && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" onClick={close}>
           <div className="lightbox-inner" onClick={(e) => e.stopPropagation()}>
-            <Scene tone={GALLERY[index].tone} label={GALLERY[index].alt} />
+            <Scene variant={GALLERY[index].variant} seed={index * 13 + 5} label={GALLERY[index].alt} live />
             <p>{GALLERY[index].alt}</p>
             <button ref={closeRef} className="lb-close" onClick={close} aria-label="Close">✕</button>
             <button className="lb-prev" onClick={() => step(-1)} aria-label="Previous photo">‹</button>

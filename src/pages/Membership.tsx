@@ -15,7 +15,7 @@ export default function Membership() {
   useDocumentTitle('Membership');
   return (
     <>
-      <PageHero eyebrow="Join the club" title="Membership" subtitle="Play more often, on both courses, with a community that feels like home." tone="green" />
+      <PageHero eyebrow="Join the club" title="Membership" subtitle="Play more often, on both courses, with a community that feels like home." video="clubhouse" />
 
       <Section title="Choose your tier">
         <ul className="tiers">

@@ -91,3 +91,16 @@ describe('gallery lightbox', () => {
     expect(screen.queryByRole('dialog', { name: 'Photo viewer' })).toBeNull();
   });
 });
+
+describe('video previews', () => {
+  it('opens a modal player from a tour card and closes with Escape', async () => {
+    renderAt('/');
+    await screen.findByRole('heading', { level: 1 });
+    fireEvent.click(screen.getByLabelText('Close announcement'));
+    fireEvent.click(screen.getByRole('button', { name: /Play video: The Lakes Course/ }));
+    const dialog = screen.getByRole('dialog', { name: 'The Lakes Course' });
+    expect(dialog.querySelector('video')).toHaveAttribute('src', expect.stringContaining('media/lake.mp4'));
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(screen.queryByRole('dialog', { name: 'The Lakes Course' })).toBeNull();
+  });
+});

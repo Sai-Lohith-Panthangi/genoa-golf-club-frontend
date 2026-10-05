@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
+    "media": "node scripts/render-videos.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -26,6 +27,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",
     "jsdom": "^25.0.1",
+    "playwright-core": "^1.53.0",
     "typescript": "~5.5.4",
     "vite": "^5.4.8",
     "vitest": "^2.1.2"

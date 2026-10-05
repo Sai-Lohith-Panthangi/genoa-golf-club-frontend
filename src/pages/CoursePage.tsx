@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Gallery from '../components/Gallery';
 import PageHero from '../components/PageHero';
 import Section from '../components/Section';
+import VideoPreview from '../components/VideoPreview';
 import { BOOKING_URL, type CourseInfo } from '../data/site';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 
@@ -9,7 +10,7 @@ export default function CoursePage({ course }: { course: CourseInfo }) {
   useDocumentTitle(course.name);
   return (
     <>
-      <PageHero eyebrow="The courses" title={course.name} subtitle={course.tagline} tone={course.slug === 'lakes' ? 'sky' : 'gold'}>
+      <PageHero eyebrow="The courses" title={course.name} subtitle={course.tagline} video={course.slug === 'lakes' ? 'sunset' : 'ranch'}>
         <a className="btn btn-gold" href={BOOKING_URL} target="_blank" rel="noopener noreferrer">Book a Tee Time</a>
       </PageHero>
 
@@ -25,7 +26,14 @@ export default function CoursePage({ course }: { course: CourseInfo }) {
         </dl>
       </Section>
 
-      <Section tone="alt" title="Highlights">
+      <Section tone="alt" title="Course preview">
+        <div className="tour tour-2">
+          <VideoPreview clip={course.slug === 'lakes' ? 'lake' : 'ranch'} title={`${course.name} flyover`} caption="Tap to play" />
+          <VideoPreview clip={course.slug === 'lakes' ? 'sunset' : 'dawn'} title={course.slug === 'lakes' ? 'Evening on the water' : 'First light on the Ranch'} caption="Tap to play" />
+        </div>
+      </Section>
+
+      <Section title="Highlights">
         <ul className="cards">
           {course.highlights.map((h) => (
             <li key={h.title} className="card">
@@ -36,7 +44,7 @@ export default function CoursePage({ course }: { course: CourseInfo }) {
         </ul>
       </Section>
 
-      <Section title="Hole by hole" intro="A few of the holes you will remember.">
+      <Section tone="alt" title="Hole by hole" intro="A few of the holes you will remember.">
         <div className="table-wrap">
           <table>
             <caption className="sr-only">Selected holes on the {course.name}</caption>
@@ -57,7 +65,7 @@ export default function CoursePage({ course }: { course: CourseInfo }) {
         </div>
       </Section>
 
-      <Section tone="alt" title="Rates">
+      <Section title="Rates">
         <ul className="rates">
           {course.rates.map((r) => (
             <li key={r.label}>
@@ -69,7 +77,7 @@ export default function CoursePage({ course }: { course: CourseInfo }) {
         <p className="muted">Rates include cart. Sample pricing for this demo.</p>
       </Section>
 
-      <Section title="Gallery">
+      <Section tone="alt" title="Gallery">
         <Gallery />
         <p className="cta-line">
           Hosting an event on this course? <Link to="/golf-outings#enquire">Start an enquiry</Link>.
