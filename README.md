@@ -1,94 +1,76 @@
-# Genoa Golf Club: Front End
+# Genoa Golf Club Website (Front End)
 
-React + Vite + TypeScript front end for the Genoa Golf Club website redesign.
-It pairs with the Spring Boot API in `genoa-golf-club-backend`, but also runs
-on its own in **demo mode** with built-in sample data.
+The front end for the Genoa Golf Club website redesign, built with React, Vite and TypeScript. It has five pages: Home, Lakes Course, Ranch Course, Golf Outings and Membership. It works with the [Spring Boot backend](https://github.com/Sai-Lohith-Panthangi/genoa-golf-club-backend) I built for the same project, and it also runs by itself with sample data.
 
-**Pages:** Home · Lakes Course · Ranch Course · Golf Outings · Membership (+ 404)
+## Getting started
 
-## Run it
-
-Requires Node 20 or newer.
+You need Node 20 or newer.
 
 ```bash
 npm install
-npm run dev          # http://localhost:5173
+npm run dev
 ```
 
-| Command             | What it does                          |
-| ------------------- | ------------------------------------- |
-| `npm run dev`       | Dev server with hot reload            |
-| `npm run build`     | Type-check, then production build     |
-| `npm run preview`   | Serve the production build locally    |
-| `npm test`          | Run the test suite (Vitest)           |
-| `npm run typecheck` | TypeScript only                       |
+Then open http://localhost:5173.
 
-## Connect to the backend
+Other commands:
 
-```bash
-cp .env.example .env.local     # sets VITE_API_BASE_URL=http://localhost:8080
-```
+| Command | What it does |
+| --- | --- |
+| `npm run build` | Type-check and build for production |
+| `npm run preview` | Serve the production build locally |
+| `npm test` | Run the tests |
+| `npm run media` | Re-render the video clips (see below) |
 
-With `VITE_API_BASE_URL` unset the site uses demo data and simulated form posts.
-With it set, these endpoints are called:
+## Using it with the backend
 
-| Feature            | Endpoint                                  |
-| ------------------ | ----------------------------------------- |
-| Events preview     | `GET  /api/v1/events/upcoming`            |
-| Promotional popup  | `GET  /api/v1/popups/active` (204 = none) |
-| Venue enquiry      | `POST /api/v1/enquiries`                  |
-| E-Club signup      | `POST /api/v1/eclub/subscribe`            |
+Copy `.env.example` to `.env.local` and set `VITE_API_BASE_URL` to the backend address (`http://localhost:8080` by default). Without it, the site shows sample events and pretends to submit forms, which is handy for working on the UI alone.
 
-The backend must allow this origin in its CORS settings
-(`http://localhost:5173` for development).
+It talks to four endpoints:
 
-## What is in it
+- `GET /api/v1/events/upcoming` for the events preview
+- `GET /api/v1/popups/active` for the popup
+- `POST /api/v1/enquiries` for the venue enquiry form
+- `POST /api/v1/eclub/subscribe` for the E-Club signup
 
-- Responsive, mobile-first layout with a collapsing nav
-- Fortnightly popup, dismissal remembered with a cookie whose lifetime comes from the server (default 14 days)
-- Venue enquiry form with client-side validation that mirrors the backend rules, and server field errors shown inline
-- E-Club signup, events preview, gallery with keyboard-accessible lightbox
-- Accessibility: skip link, labelled fields, `aria-live` status messages, focus management in dialogs, reduced-motion support
-- Hero background video, tap-to-play video previews with a modal player, animated landscape artwork
-- Lazy-loaded secondary pages; 17 automated tests
+The backend needs to allow `http://localhost:5173` in its CORS settings.
 
-## Images and video
+## What's in it
 
-No licensed photography was available when this was built, so the visuals are
-layered, animated landscape scenes (`src/components/Scene.tsx`) and five looping
-12-second clips in `public/media/` (`lake`, `ranch`, `clubhouse`, `sunset`, `dawn`,
-each with a `.jpg` poster). They drive the hero background video, the
-"Take a tour" preview cards and the course-page previews.
+- **Home:** hero with video background, feature tiles, a video tour, upcoming events, photo gallery, social feed, Stay & Play, E-Club signup and the enquiry form.
+- **Lakes and Ranch courses:** one shared page template filled with each course's stats, highlights, hole table, rates and video previews.
+- **Golf Outings:** packages, how it works, and the enquiry form preset for outings.
+- **Membership:** three tiers, a short FAQ and E-Club signup.
+- **Popup:** shown on the home page and not shown again for the number of days the server specifies (14 by default), tracked with a cookie.
+- **Enquiry form:** validates on the client using the same rules as the backend, and shows any server errors next to the right field.
+- **Accessibility and performance:** skip link, labelled fields, keyboard-friendly dialogs, reduced-motion support, and lazy-loaded secondary pages.
 
-- **Use real footage or photos:** replace the files in `public/media/` keeping the
-  same names, or edit `src/data/media.ts` to point at any URL.
-- **Re-render the clips** after changing a scene: run `npm run dev` in one terminal,
-  then `npm run media` in another (needs ffmpeg and Chrome; set `CHROMIUM_PATH` if
-  Chrome is not auto-detected). Every animation loops in 12 s, so the clips loop cleanly.
-- Hero video is muted, loops, skips itself for visitors who prefer reduced motion,
-  and falls back to the animated artwork if the file cannot load.
-
-## Project layout
+## Project structure
 
 ```
 src/
-  api/         client + DTO types (demo-mode fallback)
-  components/  Header, Footer, Popup, EnquiryForm, Gallery, ...
-  pages/       Home, CoursePage (Lakes/Ranch), GolfOutings, Membership
-  data/        static page content
-  lib/         validation, cookies
-  styles/      global.css
+  api/          API client and types
+  components/   Header, Footer, Popup, EnquiryForm, Gallery, VideoPreview, ...
+  data/         page content and media config
+  lib/          validation and cookie helpers
+  pages/        Home, CoursePage, GolfOutings, Membership
+  styles/       global.css
+public/media/   hero and preview videos with poster images
+scripts/        render-videos.mjs
 ```
 
-## Placeholders to replace
+## Images and video
 
-- Images are generated SVG scenes (`components/Scene.tsx`). Swap in real photography.
-- `BOOKING_URL` in `src/data/site.ts` is a stand-in for the real ForeUP link.
-- Prices, hole data, address and phone number are sample content.
-- The reCAPTCHA token is a dev value; wire up reCAPTCHA v3 before going live.
+The visuals are animated landscape scenes (`src/components/Scene.tsx`) and five looping clips in `public/media/`: `lake`, `ranch`, `clubhouse`, `sunset` and `dawn`. To use real photos or footage, replace those files with the same names or change the paths in `src/data/media.ts`.
 
-## Deploy
+To re-render the clips after editing a scene, start `npm run dev` in one terminal and run `npm run media` in another. It needs ffmpeg and Chrome installed.
 
-Static output in `dist/`. `vercel.json` and `public/_redirects` handle SPA routing
-on Vercel and Netlify. For GitHub Pages: `VITE_BASE=/genoa-golf-web/ npm run build`
-(Pages needs a 404 fallback copy of `index.html` for deep links).
+## Before going live
+
+- Replace the sample content: prices, hole details, address and phone number.
+- Set the real ForeUP link in `BOOKING_URL` (`src/data/site.ts`).
+- Add reCAPTCHA v3 to the enquiry form. It currently sends a development token.
+
+## Deploying
+
+`npm run build` outputs a static site to `dist/`. `vercel.json` and `public/_redirects` take care of page routing on Vercel and Netlify. For GitHub Pages, build with `VITE_BASE=/genoa-golf-web/ npm run build`.
