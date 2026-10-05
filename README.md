@@ -59,7 +59,7 @@ src/
   styles/       global.css
 public/images/  course photos
 public/media/   hero and preview videos with poster images
-scripts/        render-videos.mjs
+scripts/        make-videos.mjs
 ```
 
 ## Images and video
