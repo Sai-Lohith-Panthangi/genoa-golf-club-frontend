@@ -1,157 +1,64 @@
-// Static content for the marketing pages. Anything that changes often
-// (events, popup) comes from the backend via src/api/client.ts instead.
+import type { PhotoKey } from './media';
 
-import type { Variant } from '../components/Scene';
-
-export const BOOKING_URL = 'https://foreupsoftware.com/'; // ForeUP tee-time link (placeholder)
+export const BOOKING_URL = 'https://foreupsoftware.com/'; // replace with the club's ForeUP booking link
 
 export const NAV = [
-  { to: '/', label: 'Home' },
   { to: '/lakes-course', label: 'Lakes Course' },
   { to: '/ranch-course', label: 'Ranch Course' },
   { to: '/golf-outings', label: 'Golf Outings' },
   { to: '/membership', label: 'Membership' },
 ] as const;
 
+export const FOOTER_LINKS = [
+  { to: '/lakes-course', label: 'Lakes Course' },
+  { to: '/ranch-course', label: 'Ranch Course' },
+  { to: '/membership', label: 'Membership' },
+  { to: '/#enquire', label: 'Weddings' },
+  { to: '/#dining', label: 'Dining' },
+  { to: '/#enquire', label: 'Contact' },
+] as const;
+
 export interface Tile {
   title: string;
   blurb: string;
   to: string;
-  tone: 'green' | 'gold' | 'sky' | 'sand';
-  variant: Variant;
+  photo: PhotoKey;
+  pos: string;
 }
 
 export const FEATURE_TILES: Tile[] = [
-  { title: 'Membership', blurb: 'Play more, save more, belong.', to: '/membership', tone: 'green', variant: 'lake' },
-  { title: 'Golf Outings', blurb: 'Tournaments and team days, handled.', to: '/golf-outings', tone: 'gold', variant: 'ranch' },
-  { title: 'Dining', blurb: 'Lunch with a view of the 18th.', to: '/#enquire', tone: 'sky', variant: 'clubhouse' },
-  { title: 'Weddings & Events', blurb: 'Vows on the lake, party on the lawn.', to: '/#enquire', tone: 'sand', variant: 'sunset' },
+  { title: 'Membership', blurb: 'Play more, save more, belong.', to: '/membership', photo: 'river', pos: '50% 40%' },
+  { title: 'Golf Outings', blurb: 'Tournaments and team days, handled.', to: '/golf-outings', photo: 'trail', pos: '60% 50%' },
+  { title: 'Dining', blurb: 'Lunch with a view of the mountains.', to: '/#dining', photo: 'pond', pos: '50% 60%' },
+  { title: 'Weddings & Events', blurb: 'Vows by the water, party on the lawn.', to: '/#enquire', photo: 'panorama', pos: '66% 60%' },
 ];
 
-export interface CourseInfo {
-  slug: 'lakes' | 'ranch';
-  name: string;
-  tagline: string;
-  intro: string;
-  stats: { label: string; value: string }[];
-  highlights: { title: string; text: string }[];
-  holes: { hole: number; par: number; yards: number; note: string }[];
-  rates: { label: string; price: string }[];
+/** Seasonal tee-sheet hours. Months are 1-12. */
+export interface Season {
+  label: string;
+  from: [month: number, day: number];
+  to: [month: number, day: number];
+  first: string;
+  last: string;
 }
 
-export const COURSES: Record<'lakes' | 'ranch', CourseInfo> = {
-  lakes: {
-    slug: 'lakes',
-    name: 'Lakes Course',
-    tagline: 'Water on nearly every hole. Views on all of them.',
-    intro:
-      'Our signature layout threads through five lakes with wide, forgiving fairways and greens that reward a confident approach. It is the course members point visitors to first.',
-    stats: [
-      { label: 'Holes', value: '18' },
-      { label: 'Par', value: '72' },
-      { label: 'Yardage', value: '6,812' },
-      { label: 'Slope', value: '131' },
-    ],
-    highlights: [
-      { title: 'Signature 7th', text: 'A par 3 over open water with the Sierra ridge behind the green.' },
-      { title: 'Practice facilities', text: 'Full driving range, short-game area and two putting greens.' },
-      { title: 'Clubhouse terrace', text: 'Post-round lunch overlooking the closing hole.' },
-    ],
-    holes: [
-      { hole: 1, par: 4, yards: 392, note: 'Gentle opener, bunker guards the right side.' },
-      { hole: 4, par: 5, yards: 541, note: 'Reachable in two, but the lake is waiting.' },
-      { hole: 7, par: 3, yards: 178, note: 'Signature island-style green.' },
-      { hole: 12, par: 4, yards: 421, note: 'Dogleg left, big hitters can cut the corner.' },
-      { hole: 18, par: 5, yards: 556, note: 'Finishes in front of the clubhouse.' },
-    ],
-    rates: [
-      { label: 'Weekday', price: '$75' },
-      { label: 'Weekend', price: '$95' },
-      { label: 'Twilight', price: '$55' },
-      { label: 'Junior', price: '$25' },
-    ],
-  },
-  ranch: {
-    slug: 'ranch',
-    name: 'Ranch Course',
-    tagline: 'Open country golf with room to swing.',
-    intro:
-      'Rolling terrain, native grasses and long views define the Ranch Course. It plays a little firmer and a little faster, and it is the favourite for relaxed groups and outings.',
-    stats: [
-      { label: 'Holes', value: '18' },
-      { label: 'Par', value: '71' },
-      { label: 'Yardage', value: '6,540' },
-      { label: 'Slope', value: '127' },
-    ],
-    highlights: [
-      { title: 'Elevation changes', text: 'Tee shots that fall away to generous landing areas.' },
-      { title: 'Group friendly', text: 'Wide corridors and quick rounds suit larger parties.' },
-      { title: 'Ranch pavilion', text: 'Covered event space beside the 9th green.' },
-    ],
-    holes: [
-      { hole: 2, par: 4, yards: 365, note: 'Downhill tee shot, aim at the lone oak.' },
-      { hole: 5, par: 3, yards: 165, note: 'Elevated green, club up in the wind.' },
-      { hole: 9, par: 5, yards: 520, note: 'Ends beside the pavilion.' },
-      { hole: 14, par: 4, yards: 405, note: 'Creek crossing short of the green.' },
-      { hole: 17, par: 3, yards: 192, note: 'Longest par 3 on property.' },
-    ],
-    rates: [
-      { label: 'Weekday', price: '$65' },
-      { label: 'Weekend', price: '$85' },
-      { label: 'Twilight', price: '$45' },
-      { label: 'Junior', price: '$20' },
-    ],
-  },
-};
-
-export interface MembershipTier {
-  id: string;
-  name: string;
-  price: string;
-  cadence: string;
-  featured?: boolean;
-  perks: string[];
-}
-
-export const TIERS: MembershipTier[] = [
-  {
-    id: 'weekday',
-    name: 'Weekday',
-    price: '$185',
-    cadence: 'per month',
-    perks: ['Unlimited Monday to Friday golf', 'Range balls included', '7-day advance booking', 'Member guest rate'],
-  },
-  {
-    id: 'full',
-    name: 'Full Golf',
-    price: '$265',
-    cadence: 'per month',
-    featured: true,
-    perks: [
-      'Unlimited golf, both courses',
-      '14-day advance booking',
-      'Complimentary range balls',
-      'Four guest passes a year',
-      'Member events and clubhouse discounts',
-    ],
-  },
-  {
-    id: 'family',
-    name: 'Family',
-    price: '$395',
-    cadence: 'per month',
-    perks: ['Two adults and dependants under 21', 'Junior clinics included', 'All Full Golf benefits', 'Family social calendar'],
-  },
+export const SEASONS: Season[] = [
+  { label: 'May 1 – August 31', from: [5, 1], to: [8, 31], first: '7:00 AM', last: '4:28 PM' },
+  { label: 'September 1 – September 30', from: [9, 1], to: [9, 30], first: '7:30 AM', last: '4:28 PM' },
+  { label: 'October 1 – October 14', from: [10, 1], to: [10, 14], first: '8:00 AM', last: '4:28 PM' },
+  { label: 'October 15 – November 1', from: [10, 15], to: [11, 1], first: '8:30 AM', last: '4:28 PM' },
 ];
 
-export const GALLERY = [
-  { id: 'g1', alt: 'Morning light over the lake at the 7th hole', tone: 'green', variant: 'lake' },
-  { id: 'g2', alt: 'Golfers walking the 12th fairway', tone: 'sky', variant: 'lake' },
-  { id: 'g3', alt: 'Wedding ceremony on the terrace lawn', tone: 'sand', variant: 'sunset' },
-  { id: 'g4', alt: 'Ranch course pavilion at golden hour', tone: 'gold', variant: 'ranch' },
-  { id: 'g5', alt: 'Practice green at dawn', tone: 'green', variant: 'dawn' },
-  { id: 'g6', alt: 'Clubhouse dining room', tone: 'sand', variant: 'clubhouse' },
-] as const;
+export const PRACTICE_NOTE = 'Practice facility coincides with the Golf Shop hours:';
+export const PRACTICE_HOURS = '7:00 AM – 4:30 PM';
+
+/** Index of the season containing `date`, or -1 when the course is outside the published dates. */
+export function currentSeasonIndex(date = new Date()): number {
+  const m = date.getMonth() + 1;
+  const d = date.getDate();
+  const n = m * 100 + d;
+  return SEASONS.findIndex((s) => n >= s.from[0] * 100 + s.from[1] && n <= s.to[0] * 100 + s.to[1]);
+}
 
 export const OUTING_PACKAGES = [
   { name: 'Foursome Day', size: '4 to 16 players', text: 'Tee times held together, cart included, optional lunch voucher.' },
@@ -166,16 +73,37 @@ export const OUTING_STEPS = [
   { title: 'Show up and play', text: 'We handle setup, scoring and cleanup on the day.' },
 ];
 
+export interface MembershipTier {
+  id: string;
+  name: string;
+  price: string;
+  cadence: string;
+  featured?: boolean;
+  perks: string[];
+}
+
+export const TIERS: MembershipTier[] = [
+  { id: 'weekday', name: 'Weekday', price: '$185', cadence: 'per month', perks: ['Unlimited Monday to Friday golf', 'Range balls included', '7-day advance booking', 'Member guest rate'] },
+  { id: 'full', name: 'Full Golf', price: '$265', cadence: 'per month', featured: true, perks: ['Unlimited golf, both courses', '14-day advance booking', 'Complimentary range balls', 'Four guest passes a year', 'Member events and clubhouse discounts'] },
+  { id: 'family', name: 'Family', price: '$395', cadence: 'per month', perks: ['Two adults and dependants under 21', 'Junior clinics included', 'All Full Golf benefits', 'Family social calendar'] },
+];
+
+export const MEMBER_FAQ = [
+  { q: 'Is there an initiation fee?', a: 'No. Monthly dues are the whole price in this demo.' },
+  { q: 'Can I freeze my membership?', a: 'Yes, for up to three months a year with notice.' },
+  { q: 'Do members get priority booking?', a: 'Weekday members book 7 days out, Full Golf and Family 14 days out.' },
+];
+
 export const STAY_PLAY = {
   title: 'Stay & Play',
   text: 'Pair a night in the Carson Valley with a round on either course. One booking, one rate, no juggling.',
 };
 
 export const SOCIAL_POSTS = [
-  { id: 's1', handle: '@genoagolfclub', text: 'First frost on the Lakes Course. Mornings like this are why we do it.', tone: 'sky', variant: 'dawn' },
-  { id: 's2', handle: '@genoagolfclub', text: 'Congratulations to the Hendersons. Wedding season is in full swing.', tone: 'sand', variant: 'sunset' },
-  { id: 's3', handle: '@genoagolfclub', text: 'New pin positions on the Ranch Course this weekend.', tone: 'green', variant: 'ranch' },
-] as const;
+  { id: 's1', handle: '@genoagolfclub', text: 'First snow on the peaks. Mornings like this are why we do it.', photo: 'panorama' as PhotoKey, pos: '30% 40%' },
+  { id: 's2', handle: '@genoagolfclub', text: 'Perfect reflections on the pond this weekend. Come see for yourself.', photo: 'pond' as PhotoKey, pos: '50% 60%' },
+  { id: 's3', handle: '@genoagolfclub', text: 'New pin positions across the Ranch Course. Bring your short game.', photo: 'trail' as PhotoKey, pos: '60% 50%' },
+];
 
 export const EVENT_TYPES = [
   { value: 'WEDDING', label: 'Wedding' },

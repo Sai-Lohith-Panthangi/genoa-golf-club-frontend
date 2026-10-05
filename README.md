@@ -37,37 +37,47 @@ The backend needs to allow `http://localhost:5173` in its CORS settings.
 
 ## What's in it
 
-- **Home:** hero with video background, feature tiles, a video tour, upcoming events, photo gallery, social feed, Stay & Play, E-Club signup and the enquiry form.
-- **Lakes and Ranch courses:** one shared page template filled with each course's stats, highlights, hole table, rates and video previews.
+- **Home:** full-width hero with a looping video, feature tiles, the two courses, a video tour, upcoming events, Stay & Play, social feed and the venue enquiry form.
+- **Lakes Course:** built from the client's sample page: intro with a flyover video, key stats, photo gallery, seasonal hours (the current season is highlighted), green fees, scorecard with a tee comparison, and a booking call to action.
+- **Ranch Course:** the same template with the Ranch details.
 - **Golf Outings:** packages, how it works, and the enquiry form preset for outings.
-- **Membership:** three tiers, a short FAQ and E-Club signup.
+- **Membership:** three tiers and a short FAQ.
+- **Every page:** sticky header, "Stay Connected" E-Club signup and the footer.
 - **Popup:** shown on the home page and not shown again for the number of days the server specifies (14 by default), tracked with a cookie.
 - **Enquiry form:** validates on the client using the same rules as the backend, and shows any server errors next to the right field.
-- **Accessibility and performance:** skip link, labelled fields, keyboard-friendly dialogs, reduced-motion support, and lazy-loaded secondary pages.
+- **Accessibility and performance:** skip link, labelled fields, dialogs that trap focus and lock page scroll, reduced-motion support, fonts bundled with the app (no external requests), and lazy-loaded pages and images.
 
 ## Project structure
 
 ```
 src/
   api/          API client and types
-  components/   Header, Footer, Popup, EnquiryForm, Gallery, VideoPreview, ...
+  components/   Header, Footer, heroes, Gallery, VideoCard, Popup, EnquiryForm, ...
   data/         page content and media config
   lib/          validation and cookie helpers
   pages/        Home, CoursePage, GolfOutings, Membership
   styles/       global.css
+public/images/  course photos
 public/media/   hero and preview videos with poster images
 scripts/        render-videos.mjs
 ```
 
 ## Images and video
 
-The visuals are animated landscape scenes (`src/components/Scene.tsx`) and five looping clips in `public/media/`: `lake`, `ranch`, `clubhouse`, `sunset` and `dawn`. To use real photos or footage, replace those files with the same names or change the paths in `src/data/media.ts`.
+Photos live in `public/images` and the short clips in `public/media`. Every path is listed in `src/data/media.ts`, so swapping in new photography is a matter of replacing files with the same names.
 
-To re-render the clips after editing a scene, start `npm run dev` in one terminal and run `npm run media` in another. It needs ffmpeg and Chrome installed.
+The clips are slow pan and zoom videos made from the photos. After changing a photo, rebuild them with:
+
+```bash
+npm run media
+```
+
+This only needs ffmpeg installed. Each clip is 12 seconds and loops without a visible jump.
 
 ## Before going live
 
-- Replace the sample content: prices, hole details, address and phone number.
+- Replace the photos in `public/images` with the original high-resolution files from the club.
+- Check the Ranch Course details, membership prices, events and contact details, which are sample content.
 - Set the real ForeUP link in `BOOKING_URL` (`src/data/site.ts`).
 - Add reCAPTCHA v3 to the enquiry form. It currently sends a development token.
 

@@ -1,37 +1,33 @@
 import { Link } from 'react-router-dom';
-import { NAV } from '../data/site';
+import { FOOTER_LINKS } from '../data/site';
+import Logo from './Logo';
 
 export default function Footer() {
   return (
     <footer className="site-footer">
-      <div className="container footer-grid">
-        <div>
-          <p className="footer-brand">Genoa Golf Club</p>
-          <p>Two courses, one clubhouse, and the best view in the valley.</p>
+      <div className="container">
+        <div className="footer-top">
+          <Link to="/" aria-label="Genoa Golf Club, home" className="footer-logo">
+            <Logo />
+          </Link>
+          <nav aria-label="Footer">
+            <ul className="footer-links">
+              {FOOTER_LINKS.map((l) => (
+                <li key={l.label}>
+                  <Link to={l.to}>{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-        <div>
-          <p className="footer-title">Explore</p>
-          <ul>
-            {NAV.map((n) => (
-              <li key={n.to}>
-                <Link to={n.to}>{n.label}</Link>
-              </li>
-            ))}
-          </ul>
+        <div className="footer-base">
+          <small>© {new Date().getFullYear()} Genoa Golf Club</small>
+          <small>
+            <span>Privacy Policy</span>
+            <span aria-hidden="true"> | </span>
+            <span>Terms &amp; Conditions</span>
+          </small>
         </div>
-        <div>
-          <p className="footer-title">Visit</p>
-          <address>
-            1 Clubhouse Drive
-            <br />
-            Genoa, NV
-            <br />
-            <a href="tel:+17755550100">(775) 555-0100</a>
-          </address>
-        </div>
-      </div>
-      <div className="container footer-base">
-        <small>© {new Date().getFullYear()} Genoa Golf Club. Demo build, not the live site.</small>
       </div>
     </footer>
   );

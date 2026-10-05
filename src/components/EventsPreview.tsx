@@ -25,9 +25,9 @@ export default function EventsPreview() {
     };
   }, []);
 
-  if (failed) return <p className="muted">Upcoming events are unavailable right now. Please check back soon.</p>;
-  if (!events) return <p className="muted" aria-live="polite">Loading events…</p>;
-  if (events.length === 0) return <p className="muted">No events scheduled. New dates are added regularly.</p>;
+  if (failed) return <p className="muted center">Upcoming events are unavailable right now. Please check back soon.</p>;
+  if (!events) return <p className="muted center" aria-live="polite">Loading events…</p>;
+  if (events.length === 0) return <p className="muted center">No events scheduled. New dates are added regularly.</p>;
 
   return (
     <ul className="events">
@@ -35,7 +35,7 @@ export default function EventsPreview() {
         const f = fmt(ev.startsAt);
         return (
           <li key={ev.id} className="event-card">
-            <div className="event-date" style={{ background: ev.categoryColour ?? undefined }}>
+            <div className="event-date">
               <span>{f.month}</span>
               <strong>{f.day}</strong>
             </div>

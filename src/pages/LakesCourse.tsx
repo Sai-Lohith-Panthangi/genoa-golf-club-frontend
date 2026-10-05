@@ -1,4 +1,4 @@
-import { COURSES } from '../data/site';
+import { COURSES } from '../data/courses';
 import CoursePage from './CoursePage';
 
 export default function LakesCourse() {

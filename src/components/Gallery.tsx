@@ -1,56 +1,58 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { GALLERY } from '../data/site';
-import Scene from './Scene';
+import { useCallback, useEffect, useState } from 'react';
+import { PHOTOS, type PhotoKey } from '../data/media';
+import { useDialog } from '../hooks/useDialog';
+import Photo from './Photo';
 
-export default function Gallery() {
+export interface GalleryItem {
+  photo: PhotoKey;
+  pos?: string;
+  caption?: string;
+}
+
+/** `feature` puts the first photo across the top, the rest beneath it. */
+export default function Gallery({ items, layout = 'feature' }: { items: GalleryItem[]; layout?: 'feature' | 'grid' }) {
   const [index, setIndex] = useState<number | null>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const opener = useRef<HTMLElement | null>(null);
-
-  const close = useCallback(() => {
-    setIndex(null);
-    opener.current?.focus();
-  }, []);
-  const step = useCallback((d: number) => setIndex((i) => (i === null ? i : (i + d + GALLERY.length) % GALLERY.length)), []);
+  const close = useCallback(() => setIndex(null), []);
+  const step = useCallback((d: number) => setIndex((i) => (i === null ? i : (i + d + items.length) % items.length)), [items.length]);
+  const ref = useDialog<HTMLDivElement>(index !== null, close);
 
   useEffect(() => {
     if (index === null) return;
-    closeRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
       if (e.key === 'ArrowRight') step(1);
       if (e.key === 'ArrowLeft') step(-1);
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [index, close, step]);
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [index, step]);
+
+  const current = index === null ? null : items[index];
 
   return (
     <>
-      <ul className="gallery">
-        {GALLERY.map((g, i) => (
-          <li key={g.id}>
-            <button
-              onClick={(e) => {
-                opener.current = e.currentTarget;
-                setIndex(i);
-              }}
-              aria-label={`Enlarge photo: ${g.alt}`}
-            >
-              <Scene variant={g.variant} seed={i * 13 + 5} label={g.alt} />
+      <ul className={`gallery gallery-${layout}`}>
+        {items.map((g, i) => (
+          <li key={`${g.photo}-${i}`} className={layout === 'feature' && i === 0 ? 'gallery-wide' : undefined}>
+            <button onClick={() => setIndex(i)} aria-label={`Enlarge photo: ${g.caption ?? PHOTOS[g.photo].alt}`}>
+              <Photo name={g.photo} pos={g.pos} alt="" />
+              <span className="zoom-hint" aria-hidden="true">⤢</span>
             </button>
           </li>
         ))}
       </ul>
 
-      {index !== null && (
+      {current && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" onClick={close}>
-          <div className="lightbox-inner" onClick={(e) => e.stopPropagation()}>
-            <Scene variant={GALLERY[index].variant} seed={index * 13 + 5} label={GALLERY[index].alt} live />
-            <p>{GALLERY[index].alt}</p>
-            <button ref={closeRef} className="lb-close" onClick={close} aria-label="Close">✕</button>
-            <button className="lb-prev" onClick={() => step(-1)} aria-label="Previous photo">‹</button>
-            <button className="lb-next" onClick={() => step(1)} aria-label="Next photo">›</button>
+          <div className="lightbox-inner" ref={ref} onClick={(e) => e.stopPropagation()}>
+            <img src={PHOTOS[current.photo].src} alt={current.caption ?? PHOTOS[current.photo].alt} />
+            <p>{current.caption ?? PHOTOS[current.photo].alt}</p>
+            <button className="lb-btn lb-close" onClick={close} aria-label="Close">✕</button>
+            {items.length > 1 && (
+              <>
+                <button className="lb-btn lb-prev" onClick={() => step(-1)} aria-label="Previous photo">‹</button>
+                <button className="lb-btn lb-next" onClick={() => step(1)} aria-label="Next photo">›</button>
+              </>
+            )}
           </div>
         </div>
       )}
