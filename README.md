@@ -66,20 +66,12 @@ scripts/        make-videos.mjs
 
 Photos live in `public/images` and the short clips in `public/media`. Every path is listed in `src/data/media.ts`, so swapping in new photography is a matter of replacing files with the same names.
 
-The clips are slow pan and zoom videos made from the photos. After changing a photo, rebuild them with:
+
 
 ```bash
 npm run media
 ```
 
-This only needs ffmpeg installed. Each clip is 12 seconds and loops without a visible jump.
-
-## Before going live
-
-- Replace the photos in `public/images` with the original high-resolution files from the club.
-- Check the Ranch Course details, membership prices, events and contact details, which are sample content.
-- Set the real ForeUP link in `BOOKING_URL` (`src/data/site.ts`).
-- Add reCAPTCHA v3 to the enquiry form. It currently sends a development token.
 
 ## Deploying
 
